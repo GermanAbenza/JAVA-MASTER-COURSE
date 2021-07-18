@@ -1,37 +1,52 @@
 package academy.learnprogramming;
 
-import java.lang.reflect.Array;
 import java.util.Scanner;
 
 public class Main {
 
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
 
         int value = readInteger();
-        int[] array = readElements(value);
-        System.out.println(array);
+        int[] returnedArray = readElements(value);
+        int returnedMin = findMin(returnedArray);
+
+        System.out.println("min = " + returnedMin);
     }
 
-    public static int readInteger() {
-        Scanner scanner = new Scanner(System.in);
+    private static int readInteger() {
 
         System.out.println("Introduce the value you want for the length of the array");
         int value =  scanner.nextInt();
-        scanner.close();
+        scanner.nextLine();
         return value;
     }
 
-    public static int[] readElements(int arrayLength) {
-        Scanner scanner = new Scanner(System.in);
+    private static int[] readElements(int arrayLength) {
         int[] myArray = new int[arrayLength];
 
         System.out.println("Introduce " + myArray.length + " values for the array:");
         for(int i = 0; i < myArray.length; i++) {
             System.out.println("Value # " + (i+1) + ":");
-            myArray[i] = scanner.nextInt();
+            int number = scanner.nextInt();
             scanner.nextLine();
+            myArray[i] = number;
         }
-        scanner.close();
         return myArray;
+    }
+
+    private static int findMin(int[] array){
+        int min = Integer.MAX_VALUE;
+
+        for(int i = 0; i < array.length; i++){
+            int value = array[i];
+
+            if(value < min){
+                min = value;
+            }
+        }
+
+        return min;
     }
 }
