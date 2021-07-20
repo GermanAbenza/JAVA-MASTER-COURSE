@@ -14,22 +14,29 @@ public class MobilePhone {
 
   public boolean addNewContact(Contact contact) {
 
-    if(findContact(contact) >= 0){
+    if(findContact(contact.getName()) >= 0){
       System.out.println("Contact is already on file");
       return false;
     }
-    Contact.createContact(contact.getName(), contact.getPhoneNumber());
+
+    myContacts.add(contact);
     return true;
   }
 
-  public boolean updateContact(Contact oldContact, Contact newContact){
-    if(findContact(oldContact) < 0){
-      System.out.println("That contact does not exist");
+  public boolean updateContact(Contact oldContact, Contact newContact) {
+    int foundPosition = findContact(oldContact);
+    if(foundPosition <0) {
+      System.out.println(oldContact.getName() +", was not found.");
       return false;
-    }else{
-      myContacts.set(findContact(oldContact), newContact);
-      return true;
+    } else if(findContact(newContact.getName()) != -1) {
+      System.out.println("Contact with name " + newContact.getName() +
+          " already exists.  Update was not successful.");
+      return false;
     }
+
+    this.myContacts.set(foundPosition, newContact);
+    System.out.println(oldContact.getName() + ", was replaced with " + newContact.getName());
+    return true;
   }
 
   public boolean removeContact(Contact contact) {
@@ -42,6 +49,13 @@ public class MobilePhone {
     }
   }
 
+  public String queryContact(Contact contact) {
+    if(findContact(contact) >=0) {
+      return contact.getName();
+    }
+    return null;
+  }
+
   public Contact queryContact(String name) {
     int position = findContact(name);
     if(position >= 0){
@@ -51,6 +65,7 @@ public class MobilePhone {
   }
 
   public void printContacts(){
+    System.out.println("Contact List:");
       for(int i = 0; i < myContacts.size(); i++){
         Contact contactItem = myContacts.get(i);
         System.out.println((i+1) + ". " + contactItem.getName() + " -> " + contactItem.getPhoneNumber());
@@ -58,7 +73,7 @@ public class MobilePhone {
     }
 
   private int findContact(Contact contact){
-    return myContacts.indexOf(contact.getName());
+    return myContacts.indexOf(contact);
   }
   private int findContact(String contactName){
     for (int i = 0; i < myContacts.size(); i++) {
